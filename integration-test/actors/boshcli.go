@@ -33,6 +33,16 @@ func (BOSHCLI) CloudConfig(address, caCertPath, username, password string) (stri
 	return string(cloudConfig), err
 }
 
+func (BOSHCLI) Manifest(address, caCertPath string) (string, error) {
+	manifest, err := exec.Command("bosh",
+		"--ca-cert", caCertPath,
+		"-e", address,
+		"cloud-config",
+	).Output()
+
+	return string(manifest), err
+}
+
 func (BOSHCLI) DeleteEnv(stateFilePath, manifestPath string) error {
 	_, err := exec.Command(
 		"bosh",
